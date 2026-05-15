@@ -1,4 +1,5 @@
-name: Deploy Data (Database)
+name: Deploy Data
+
 on:
   push:
     branches: [ "main" ]
@@ -17,8 +18,21 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "Desplegando Base de Datos..."
-            cd Data_Eval2 || git clone https://github.com/tu-usuario/Data_Eval2.git
+            echo "Iniciando despliegue de Base de Datos..."
+            
+            # 1. Asegurar que estamos en el home y que el repo existe
+            cd ~
+            if [ ! -d "Data_Eval2" ]; then
+              git clone https://github.com/Martin89899/Data_Eval2.git
+            fi
             cd Data_Eval2
+
+            # 2. Sincronizar código
             git pull origin main
-            docker compose up -d --build
+
+            # 3. Reiniciar contenedores de Base de Datos
+            # Usamos la ruta completa al binario que instalamos
+            sudo /usr/local/bin/docker-compose down || true
+            sudo /usr/local/bin/docker-compose up -d --build
+            
+            echo "¡Base de Datos desplegada con éxito!"
