@@ -30,9 +30,9 @@ jobs:
             # 2. Actualizar código
             git pull origin main
 
-            # 3. Reiniciar con la ruta absoluta corregida
-            # Asegúrate de que no haya un espacio entre docker y -d
+            # 3. Reiniciar con la ruta absoluta y sintaxis correcta
+            # IMPORTANTE: docker-compose (con guion) up -d (separado)
             sudo /usr/local/bin/docker-compose down || true
             sudo /usr/local/bin/docker-compose up -d --build
             
-            echo "¡Servicio de datos desplegado!"
+            echo "¡Servicio de DATA desplegado correctamente!"git add .
