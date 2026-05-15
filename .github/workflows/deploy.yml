@@ -20,19 +20,19 @@ jobs:
           script: |
             echo "Iniciando despliegue de Base de Datos..."
             
-            # 1. Asegurar que estamos en el home y que el repo existe
+            # 1. Ir al home y asegurar que el repo existe
             cd ~
             if [ ! -d "Data_Eval2" ]; then
               git clone https://github.com/Martin89899/Data_Eval2.git
             fi
             cd Data_Eval2
 
-            # 2. Sincronizar código
+            # 2. Actualizar código
             git pull origin main
 
-            # 3. Reiniciar contenedores de Base de Datos
-            # Usamos la ruta completa al binario que instalamos
+            # 3. Reiniciar con la ruta absoluta corregida
+            # Asegúrate de que no haya un espacio entre docker y -d
             sudo /usr/local/bin/docker-compose down || true
             sudo /usr/local/bin/docker-compose up -d --build
             
-            echo "¡Base de Datos desplegada con éxito!"
+            echo "¡Servicio de datos desplegado!"
