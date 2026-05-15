@@ -1,16 +1,37 @@
 version: '3.8'
+
 services:
   db:
-    build: .
+    image: data_image
     container_name: db_container
     ports:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: evaluacion_db
-    volumes:
-      - db_data:/var/lib/mysql
+      MYSQL_DATABASE: proyecto_db
     restart: always
 
-volumes:
-  db_data:
+  backend:
+    image: backend_image
+    container_name: backend_container
+    ports:
+      - "5000:3000"
+    environment:
+      # Estos nombres deben coincidir con process.env en tu server.js
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root_password
+      - DB_NAME=proyecto_db
+      - DB_PORT=3306
+    depends_on:
+      - db
+    restart: always
+
+  frontend:
+    image: frontend_image
+    container_name: frontend_container
+    ports:
+      - "80:5000"
+    depends_on:
+      - backend
+    restart: always
