@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  db:
+    build: .
+    container_name: db_container
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: evaluacion_db
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+
+volumes:
+  db_data:
